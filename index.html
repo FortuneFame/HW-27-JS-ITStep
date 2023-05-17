@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>Movie Search</title>
+</head>
+
+<body>
+    <form class="searchForm" id="searchForm">
+        <input type="text" id="searchInput" placeholder="Enter movie title..." required>
+        <select class="typeSelect" id="typeSelect">
+            <option value="movie">Movie</option>
+            <option value="series">Series</option>
+            <option value="episode">Episode</option>
+        </select>
+        <button class="btnSearch" type="submit">Search</button>
+    </form>
+    <div class="moviesList" id="moviesList"></div>
+    <div class="gif" id="loader" style="display: none;">
+        <img src="https://i.gifer.com/3nR6.gif" width=280 height=280>
+    </div>
+    <button class="moreButton" id="moreButton" style="display: none;">More</button>
+    <div class="pagination" id="pagination"></div>
+    <div id="movieDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">X</span>
+            <div class="gif" id="modalLoader" style="display: none;">
+                <img src="https://i.gifer.com/3nR6.gif" width=280 height=280>
+            </div>
+            <div class="movieDetails" id="movieDetails"></div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="templates.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>

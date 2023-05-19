@@ -60,21 +60,32 @@ window.onload = () => {
 };
 
 // Функция для обработки результатов поиска
+
 function handleSearchResult(data, title, type, page, append = false) {
-    document.getElementById('loader').style.display = 'none'; 
+    // Скрываем отображение загрузчика
+    document.getElementById('loader').style.display = 'none';
+    // Если ответ сервера 'False'
     if (data.Response === 'False') {
         let moviesList = document.getElementById('moviesList');
+        // Если необходимо добавить результаты поиска, очищаем список фильмов
         if (!append) {
             moviesList.innerHTML = `<p class='error'>${data.Error}</p>`;
             document.getElementById('pagination').innerHTML = '';
         }
-        document.getElementById('moreButton').style.display = 'none'; 
+        // Скрываем кнопку "Показать ещё"
+        document.getElementById('moreButton').style.display = 'none';
     } else {
+        // Отображаем найденные фильмы
         displayMovies(data.Search, append);
+        // Отображаем пагинацию
         displayPagination(data.totalResults, title, type, page);
-        document.getElementById('moreButton').style.display = 'block';
+        // Вычисляем общее количество страниц и показываем/скрываем кнопку "Показать ещё"
+        let totalResults = parseInt(data.totalResults);
+        let totalPage = Math.ceil(totalResults / 10);
+        document.getElementById('moreButton').style.display = (page < totalPage) ? 'block' : 'none';
     }
 }
+
 // Функция для отображения списка фильмов
 const displayMovies = (movies, append = false) => {
     // Получаем элемент списка фильмов
@@ -121,6 +132,7 @@ const displayPagination = (totalResults, title, type, currentPage) => {
         prevButton.classList.add('btnPrev');
         prevButton.innerText = '<';
         prevButton.addEventListener('click', async () => {
+            page = currentPage - 1;
             const data = await movieService.search(title, type, currentPage - 1);
             handleSearchResult(data, title, type, currentPage - 1);
         });
@@ -137,6 +149,7 @@ const displayPagination = (totalResults, title, type, currentPage) => {
         }
         // При нажатии на кнопку страницы делаем запрос к API с новым номером страницы
         pageButton.addEventListener('click', async () => {
+            page = i;
             const data = await movieService.search(title, type, i);
             handleSearchResult(data, title, type, i);
         });
@@ -149,6 +162,7 @@ const displayPagination = (totalResults, title, type, currentPage) => {
         nextButton.classList.add('btnNext');
         nextButton.innerHTML = '>';
         nextButton.addEventListener('click', async () => {
+            page = currentPage + 1;
             const data = await movieService.search(title, type, currentPage + 1);
             handleSearchResult(data, title, type, currentPage + 1);
         });
